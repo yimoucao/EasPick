@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Easycut</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    We are using node <script>document.write(process.versions.node)</script>,
+    Chrome <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.
+    <div>
+      <button id="region-cut" class="cut">Regional Clip</button>
+
+    </div>
+    <img id="show-img" src="" />
+    <video></video>
+    <canvas style="display: none"></canvas>
+  </body>
+  <script src="../renderers/index.js"></script>
+</html>

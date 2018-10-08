@@ -1,0 +1,8 @@
+{
+  "name": "easycut",
+  "version": "0.1.0",
+  "main": "main.js",
+  "dependencies": {
+    "cropperjs": "^1.4.1"
+  }
+}
