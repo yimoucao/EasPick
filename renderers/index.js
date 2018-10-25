@@ -8,8 +8,14 @@ const canvas = document.querySelector('canvas');
 const video = document.querySelector('video');
 const image = document.getElementById('show-img');
 
-let button1 = document.getElementById('region-cut');
-button1.addEventListener('click', regionCut);
+let cutBtn = document.getElementById('region-cut');
+cutBtn.addEventListener('click', regionCut);
+let saveBtn = document.getElementById('save-img');
+saveBtn.addEventListener('click', saveImage)
+
+function saveImage() {
+  window.location.href = image.src.replace('image/png', 'image/octet-stream');
+}
 
 function regionCut() {
   getPrintScreen();
@@ -52,7 +58,7 @@ function handleStream(stream) {
   video.onloadedmetadata = function (e) {
     video.play();
     DataURL = takepicture();
-    stream.getTracks().forEach(track => track.stop());
+    stream.getTracks().forEach(track => track.stop()); // release resources
     video.srcObject = null;
     ipcRenderer.send('shader-img-ready', DataURL);
   };
