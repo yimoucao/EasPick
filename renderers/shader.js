@@ -16,6 +16,7 @@ ipcRenderer.on('screenimage', (event, data) => {
         zoomable: false,
         autoCrop: false,
         ready() {
+            cropper.setCanvasData({top:0});
             cropper.setDragMode("crop");
         },
         cropend() {
