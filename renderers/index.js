@@ -11,73 +11,35 @@ const image = document.getElementById('show-img');
 let cutBtn = document.getElementById('region-cut');
 cutBtn.addEventListener('click', regionCut);
 let saveBtn = document.getElementById('save-img');
-saveBtn.addEventListener('click', saveImage)
-
-function saveImage() {
-  window.location.href = image.src.replace('image/png', 'image/octet-stream');
-}
+saveBtn.addEventListener('click', ()=>{
+  ipcRenderer.send('save-dialog', image.src);
+});
 
 function regionCut() {
   getPrintScreen();
 }
 
-function getPrintScreen() {
-  desktopCapturer.getSources({ types: ['window', 'screen'] }, (error, sources) => {
-    if (error) throw error
-    for (let i = 0; i < sources.length; ++i) {
-      if (sources[i].name === 'Screen 1' || sources[i].name === 'Entire screen') {
-        navigator.mediaDevices.getUserMedia({
-          audio: false,
-          video: {
-            mandatory: {
-              chromeMediaSource: 'desktop',
-              chromeMediaSourceId: sources[i].id,
-              minWidth: 20,
-              // maxWidth: width,
-              minHeight: 20,
-              // maxHeight: height
-            }
-          }
-        }).then((stream) => handleStream(stream))
-          .catch((e) => handleError(e))
-        return
-      }
-      // if (sources[i].name === 'Screen 1') {
-      //   var image = sources[i].thumbnail;
-      //   var url = image.toDataURL();
-      //   var img_node = document.getElementById('shader-img')
-      //   img_node.src = url;
-
-      // }
-    }
-  });
-}
-
-function handleStream(stream) {
-  video.srcObject = stream;
-  video.onloadedmetadata = function (e) {
-    video.play();
-    DataURL = takepicture();
-    stream.getTracks().forEach(track => track.stop()); // release resources
-    video.srcObject = null;
-    ipcRenderer.send('shader-img-ready', DataURL);
-  };
-}
-
-function handleError(e) {
-  console.log(e)
-}
-
-function takepicture() {
-  var context = canvas.getContext('2d');
-  if (width && height) {
-    canvas.width = width;
-    canvas.height = height;
-    context.drawImage(video, 0, 0, width, height);
-
-    var data = canvas.toDataURL('image/png', 1.0); // toDataURL(type, quality)
-    return data;
+function determineScreenShotSize() {
+  const screenSize = screen.getPrimaryDisplay().workAreaSize
+  const maxDimension = Math.max(screenSize.width, screenSize.height)
+  return {
+    width: maxDimension * window.devicePixelRatio,
+    height: maxDimension * window.devicePixelRatio
   }
+}
+
+function getPrintScreen() {
+  const thumbSize = determineScreenShotSize();
+  let options = { types: ["window", "screen"], thumbnailSize: thumbSize };
+  desktopCapturer.getSources(options, (error, sources) => {
+    if (error) throw error;
+    sources.forEach((source)=>{
+      if (source.name === 'Screen 1' || source.name === 'Entire screen') {
+        ipcRenderer.send("shader-img-ready", source.thumbnail.toDataURL());
+      }
+    });
+
+  });
 }
 
 

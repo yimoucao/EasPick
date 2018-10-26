@@ -27,7 +27,7 @@ ipcRenderer.on('screenimage', (event, data) => {
             clipboard.writeImage(imgObj);
             ipcRenderer.send('cropped-img-ready', data);
             cropper.destroy();
-            remote.getCurrentWindow().close();
+            remote.getCurrentWindow().hide();
         }
     });
 });
