@@ -7,7 +7,7 @@ let cropper;
 ipcRenderer.on('screenimage', (event, data) => {
     const image = document.getElementById('shader-img');
     image.setAttribute('src', data);
-
+    
     cropper = new Cropper(image, {
         viewMode: 2,
         movable: false,
@@ -18,13 +18,14 @@ ipcRenderer.on('screenimage', (event, data) => {
         ready() {
             cropper.setCanvasData({top:0});
             cropper.setDragMode("crop");
+            remote.getCurrentWindow().show();
         },
         cropend() {
             ele = cropper.getCroppedCanvas();
             data = ele.toDataURL();
             // document.location.href = data;
-            imgObj = nativeImage.createFromDataURL(data);
-            clipboard.writeImage(imgObj);
+            // imgObj = nativeImage.createFromDataURL(data);
+            // clipboard.writeImage(imgObj);
             ipcRenderer.send('cropped-img-ready', data);
             cropper.destroy();
             remote.getCurrentWindow().hide();

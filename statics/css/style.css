@@ -1,0 +1,26 @@
+html body {
+    height: 100%;
+}
+
+.tool-bar {
+    height: 50px;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid white;
+}
+button {
+    margin: 1px;
+    padding: 1em 2em;
+    border: 1px;
+    border-radius: 5px;
+    background-color: grey;
+    cursor: pointer;
+}
+button:hover {
+    background-color: white;
+}
+
+#close-app {
+    margin-left: auto;
+}

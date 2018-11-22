@@ -2,17 +2,19 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Easycut</title>
+    <title>EasPick</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
   </head>
   <body>
-    <div class="tool-bar">
-      <button id="region-cut" class="cut">New Clip</button>
-      <button id="save-img" class="save">Save</button>
-
+    <div class="container">
+      <div class="tool-bar">
+        <button id="region-cut" class="cut">New Clip</button>
+        <button id="save-img" class="save">Save</button>
+        <button id="close-app" class="close">Close</button>
+      
+      </div>
+      <img id="show-img" src="" />
     </div>
-    <img id="show-img" src="" />
-    <video></video>
-    <canvas style="display: none"></canvas>
     <script src="../renderers/index.js"></script>
   </body>
 </html>

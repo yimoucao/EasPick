@@ -1,5 +1,7 @@
 const electron = require('electron');
-const { app, BrowserWindow, ipcMain, dialog, nativeImage } = electron;
+require('electron-reload')(__dirname); // hot reload
+
+const { app, BrowserWindow, ipcMain, dialog, nativeImage, Menu, Tray } = electron;
 const path = require('path');
 const url = require('url');
 
@@ -11,7 +13,15 @@ let mainWindow, shaderWindow;
 
 function createMainWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600 })
+  windowOptions = {
+    frame: false,
+    width: 800,
+    height: 600,
+    minWidth: 500,
+    minHeight: 200,
+    backgroundColor: '#000'
+  }
+  mainWindow = new BrowserWindow(windowOptions);
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -44,10 +54,6 @@ function createShaderWindow() {
     protocol: 'file:',
     slashes: true
   }));
-
-  // Open the DevTools.
-  // shaderWindow.webContents.openDevTools();
-
   // Emitted when the shader window is closed.
   shaderWindow.on('closed', () => { shaderWindow = null; });
 
@@ -61,7 +67,19 @@ function createWindows() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindows)
+app.on('ready', ()=>{
+  createWindows();
+  tray = new Tray('./statics/img/tray.png');
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Screen Capture'},
+    { label: 'Color Picker'},
+    { label: 'Pixel Ruler'},
+    { label: 'Protractor'},
+    { label: 'Exit'},
+  ])
+  tray.setToolTip('EasPick')
+  tray.setContextMenu(contextMenu)
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -84,7 +102,6 @@ app.on('activate', () => {
 // code. You can also put them in separate files and require them here.
 ipcMain.on('shader-img-ready', (event, data) => {
   shaderWindow.webContents.send('screenimage', data);
-  shaderWindow.show();
 });
 
 ipcMain.on('cropped-img-ready', (event, data)=>{

@@ -1,18 +1,18 @@
 const { remote, ipcRenderer, desktopCapturer, screen } = require('electron');
-const {BrowserWindow} = remote
-const path = require('path')
-const url = require('url')
 
-const {width, height} = screen.getPrimaryDisplay().size
-const canvas = document.querySelector('canvas');
-const video = document.querySelector('video');
 const image = document.getElementById('show-img');
 
 let cutBtn = document.getElementById('region-cut');
 cutBtn.addEventListener('click', regionCut);
+
 let saveBtn = document.getElementById('save-img');
 saveBtn.addEventListener('click', ()=>{
   ipcRenderer.send('save-dialog', image.src);
+});
+
+let closeBtn = document.getElementById("close-app");
+closeBtn.addEventListener('click', ()=>{
+  remote.getCurrentWindow().close();
 });
 
 function regionCut() {

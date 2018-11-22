@@ -1,9 +1,15 @@
 {
-  "name": "easycut",
+  "name": "EasPick",
   "version": "0.1.0",
   "main": "main.js",
   "dependencies": {
-    "cropperjs": "^1.4.1",
-    "electron": "^3.0.6"
+    "cropperjs": "^1.4.3"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^3.0.10",
+    "electron-reload": "^1.3.0"
   }
 }
