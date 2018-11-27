@@ -1,3 +1,4 @@
-npm install
+# [Wheel-reinventing] desktop screenshot tool
 
-electron .
+`npm install`
+`npm run start` OR `electron .`
