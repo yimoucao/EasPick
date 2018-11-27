@@ -1,0 +1,4 @@
+git remote add all original.git
+git remote set-url --add --push all another.git
+git remote set-url --add --push all original.git
+doskey /history > history.txt
